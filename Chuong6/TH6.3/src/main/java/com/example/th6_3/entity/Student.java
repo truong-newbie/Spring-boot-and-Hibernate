@@ -22,7 +22,13 @@ public class Student {
     public Student(){
 
     }
-    public Student(String ten, String hodem, String email){
+    public Student(String hodem, String ten, String email){
+        this.ten = ten;
+        this.hodem = hodem;
+        this.email = email;
+    }
+    public Student(int id, String hodem, String ten, String email){
+        this.id = id;
         this.ten = ten;
         this.hodem = hodem;
         this.email = email;
