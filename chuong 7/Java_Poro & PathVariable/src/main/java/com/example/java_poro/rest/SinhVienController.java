@@ -1,12 +1,13 @@
 package com.example.java_poro.rest;
 
 
+import com.example.java_poro.Entity.ErrorResponse;
 import com.example.java_poro.Entity.SinhVien;
+import com.example.java_poro.exception.SinhVienException;
 import jakarta.annotation.PostConstruct;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,12 +36,16 @@ public class SinhVienController {
 
     @GetMapping("/{id}")
     public SinhVien getSinhVien(@PathVariable int id){
+        SinhVien result = null;
         for(SinhVien sv: danhsach){
             if(sv.getId()  == id){
                 return sv;
             }
         }
+        if(result ==null)
+            throw new SinhVienException("khong tim thay sinh vien can tim");
         return null;
+
 
     }
 
@@ -54,4 +59,30 @@ public class SinhVienController {
         return null;
     }
 
+    @GetMapping("/index/{index}")
+    public SinhVien getSinhVien2(@PathVariable int index){
+        SinhVien sinhVien =null;
+        try{
+            sinhVien = danhsach.get(index);
+        }catch (IndexOutOfBoundsException e){
+            throw new SinhVienException("khong tim thay sinh vien can tim");
+        }
+        return sinhVien;
+    }
+
+//    @ExceptionHandler
+//    public ResponseEntity<ErrorResponse> batloi(SinhVienException ex){
+//
+//        ErrorResponse er = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(er);
+//
+//    }
+//
+//    @ExceptionHandler
+//    public ResponseEntity<ErrorResponse> batloi2(Exception ex){
+//
+//        ErrorResponse er = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(er);
+//
+//    }
 }
